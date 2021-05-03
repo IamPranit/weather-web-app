@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import CardList from "./containers/CardList";
+import CardList from "./containers/card-list/CardList";
 import "./App.css";
 import Search from "./components/Search/Search";
 import HourlyData from "./components/Chart/HourlyData";
