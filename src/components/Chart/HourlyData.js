@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { WEATHER_HOURLY_URL, APP_ID } from "../../config";
 import { Line } from "react-chartjs-2";
 import "./hourlyData.css";
 
@@ -16,7 +15,7 @@ const HourlyData = (props) => {
         let weather;
         if (geoCoords && props.weatherForecast.city) {
           weather = await axios.get(
-            `${WEATHER_HOURLY_URL}?lat=${geoCoords.lat}&lon=${geoCoords.lon}&appid=${APP_ID}`
+            `${process.env.REACT_APP_WEATHER_HOURLY_URL}?lat=${geoCoords.lat}&lon=${geoCoords.lon}&appid=${process.env.REACT_APP_APP_ID}`
           );
         }
 

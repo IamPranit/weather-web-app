@@ -3,7 +3,6 @@ import axios from "axios";
 import CardList from "./containers/card-list/CardList";
 import "./App.css";
 import HourlyData from "./components/Chart/HourlyData";
-import { WEATHER_URL, APP_ID } from "./config";
 import { useHistory, Route, Switch } from "react-router-dom";
 import Home from './containers/Home/Home'
 
@@ -16,7 +15,7 @@ function App() {
     const weatherReport = async () => {
       try {
         const weather = await axios.get(
-          `${WEATHER_URL}?q=${cityName}&appid=${APP_ID}`
+          `${process.env.REACT_APP_WEATHER_URL}?q=${cityName}&appid=${process.env.REACT_APP_APP_ID}`
         );
         setWeatherForecast(weather.data);
       } catch (err) {
@@ -32,7 +31,7 @@ function App() {
 
   const onSearch = async () => {
     const weather = await axios.get(
-      `${WEATHER_URL}?q=${cityName}&appid=${APP_ID}`
+      `${process.env.REACT_APP_WEATHER_URL}?q=${cityName}&appid=${process.env.REACT_APP_APP_ID}`
     );
     const { data } = weather;
     setWeatherForecast(data);
