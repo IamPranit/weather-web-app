@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import CardList from "./containers/card-list/CardList";
 import "./App.css";
-import Search from "./components/Search/Search";
 import HourlyData from "./components/Chart/HourlyData";
 import { WEATHER_URL, APP_ID } from "./config";
 import { useHistory, Route, Switch } from "react-router-dom";
+import Home from './containers/Home/Home'
 
 function App() {
   const [weatherForecast, setWeatherForecast] = useState({});
@@ -44,9 +44,8 @@ function App() {
       <header className="App-header App-logo">Weather Info</header>
       <Switch>
         <Route exact path="/">
-          <Search setSearch={setSearch} onSearch={onSearch} />
           {weatherForecast.list && (
-            <CardList weatherForecast={weatherForecast && weatherForecast} />
+            <Home setSearch={setSearch} onSearch={onSearch} weatherForecast={weatherForecast && weatherForecast} />
           )}
         </Route>
         <Route exact path="/:cityName">
