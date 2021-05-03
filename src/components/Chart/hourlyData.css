@@ -1,0 +1,7 @@
+.chartContainer {
+    display: flex;
+    place-content: center;
+}
+.lineChart {
+    width: 50rem;
+}

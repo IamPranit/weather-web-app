@@ -1,23 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import CardList from "./containers/CardList";
+import "./App.css";
+import Search from "./components/Search/Search";
+import HourlyData from "./components/Chart/HourlyData";
+import { WEATHER_URL, APP_ID } from "./config";
+import { useHistory, Route, Switch } from "react-router-dom";
 
 function App() {
+  const [weatherForecast, setWeatherForecast] = useState({});
+  const [cityName, setCityName] = useState("mumbai");
+  let history = useHistory();
+
+  useEffect(() => {
+    const weatherReport = async () => {
+      try {
+        const weather = await axios.get(
+          `${WEATHER_URL}?q=${cityName}&appid=${APP_ID}`
+        );
+        setWeatherForecast(weather.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    weatherReport();
+  }, []);
+
+  const setSearch = (e) => {
+    setCityName(e.target.value.toLowerCase());
+  };
+
+  const onSearch = async () => {
+    const weather = await axios.get(
+      `${WEATHER_URL}?q=${cityName}&appid=${APP_ID}`
+    );
+    const { data } = weather;
+    setWeatherForecast(data);
+    history.push(`/${cityName}`);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header className="App-header App-logo">Weather Info</header>
+      <Switch>
+        <Route exact path="/">
+          <Search setSearch={setSearch} onSearch={onSearch} />
+          {weatherForecast.list && (
+            <CardList weatherForecast={weatherForecast && weatherForecast} />
+          )}
+        </Route>
+        <Route exact path="/:cityName">
+          {weatherForecast.list && (
+            <CardList weatherForecast={weatherForecast && weatherForecast} />
+          )}
+        </Route>
+        <Route exact path="/:cityName/:day">
+          <HourlyData weatherForecast={weatherForecast && weatherForecast} />
+        </Route>
+      </Switch>
     </div>
   );
 }
